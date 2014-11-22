@@ -15,7 +15,7 @@ type route struct {
 
 // Creates a new router
 func NewRouter() router {
-	  return router{routes: make([]route, 0)}
+    return router{routes: make([]route, 0)}
 }
 
 // Adds a new route to router

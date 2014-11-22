@@ -13,33 +13,33 @@ import(
 )
 
 const (
-	VERSION string = "1.0-beta"
+    VERSION string = "1.0-beta"
 )
 
 type gofast struct {
-	logger *log.Logger
-	router router
+    logger *log.Logger
+    router router
 }
 
 // Bootstraps a new instance
 func Bootstrap() gofast {
-	log.Printf("gofast v%s", VERSION)
+    log.Printf("gofast v%s", VERSION)
 
-	logger := log.New(os.Stdout, "[gofast]", 0)
-	router := NewRouter()
+    logger := log.New(os.Stdout, "[gofast]", 0)
+    router := NewRouter()
 
-	return gofast{logger: logger, router: router}
+    return gofast{logger: logger, router: router}
 }
 
 // Handles HTTP requests
 func (g *gofast) Handle() {
-	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", nil)
+    http.HandleFunc("/", indexHandler)
+    http.ListenAndServe(":8080", nil)
 }
 
 // Returns router
 func (g *gofast) Router() router {
-	return g.router
+    return g.router
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
