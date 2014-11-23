@@ -4,6 +4,10 @@
 
 package gofast
 
+import (
+    "net/http"
+)
+
 type router struct {
     routes []route
 }
@@ -11,7 +15,10 @@ type router struct {
 type route struct {
     name    string
     pattern string
+    handler handler
 }
+
+type handler func(w http.ResponseWriter, r *http.Request)
 
 // Creates a new router
 func NewRouter() router {
@@ -19,12 +26,27 @@ func NewRouter() router {
 }
 
 // Adds a new route to router
-func (r *router) AddRoute(name string, pattern string) {
-    route := route{name: name, pattern: pattern}
+func (r *router) Add(name string, pattern string, handler handler) {
+    route := route{name: name, pattern: pattern, handler: handler}
     r.routes = append(r.routes, route)
+
+    http.HandleFunc(pattern, handler)
 }
 
 // Returns all routes available in router
 func (r *router) GetRoutes() []route {
     return r.routes
+}
+
+// Returns a route from given name
+func (r *router) GetRoute(name string) route {
+    var result route
+
+    for _, route := range r.routes {
+        if (route.name == name) {
+            result = route
+        }
+    }
+
+    return result
 }

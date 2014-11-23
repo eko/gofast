@@ -7,9 +7,7 @@ package gofast
 import(
     "net/http"
     "os"
-    "fmt"
     "log"
-    "time"
 )
 
 const (
@@ -20,6 +18,8 @@ type gofast struct {
     logger *log.Logger
     router router
 }
+
+type requestHandler func()
 
 // Bootstraps a new instance
 func Bootstrap() gofast {
@@ -33,18 +33,10 @@ func Bootstrap() gofast {
 
 // Handles HTTP requests
 func (g *gofast) Handle() {
-    http.HandleFunc("/", indexHandler)
     http.ListenAndServe(":8080", nil)
 }
 
-// Returns router
-func (g *gofast) Router() router {
+// Returns router component
+func (g *gofast) GetRouter() router {
     return g.router
-}
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-    t1 := time.Now()
-    fmt.Fprintf(w, "<h1>Welcome!</h1>")
-    t2 := time.Now()
-    log.Printf("[%s] %q (time: %v)\n", r.Method, r.URL.String(), t2.Sub(t1))
 }
