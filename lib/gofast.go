@@ -15,8 +15,9 @@ const (
 )
 
 type gofast struct {
-    logger *log.Logger
-    router router
+    logger     *log.Logger
+    router     router
+    templating templating
 }
 
 type requestHandler func()
@@ -25,10 +26,11 @@ type requestHandler func()
 func Bootstrap() gofast {
     log.Printf("gofast v%s", VERSION)
 
-    logger := log.New(os.Stdout, "[gofast]", 0)
-    router := NewRouter()
+    logger     := log.New(os.Stdout, "[gofast]", 0)
+    router     := NewRouter()
+    templating := NewTemplating()
 
-    return gofast{logger: logger, router: router}
+    return gofast{logger, router, templating}
 }
 
 // Handles HTTP requests
@@ -39,4 +41,9 @@ func (g *gofast) Handle() {
 // Returns router component
 func (g *gofast) GetRouter() router {
     return g.router
+}
+
+// Returns templating component
+func (g *gofast) GetTemplating() templating {
+    return g.templating
 }

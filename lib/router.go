@@ -20,7 +20,7 @@ type route struct {
 
 type handler func(w http.ResponseWriter, r *http.Request)
 
-// Creates a new router
+// Creates a new router component instance
 func NewRouter() router {
     return router{routes: make([]route, 0)}
 }

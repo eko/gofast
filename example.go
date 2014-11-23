@@ -13,8 +13,11 @@ import (
 )
 
 func main() {
-    g      := gofast.Bootstrap()
-    router := g.GetRouter()
+    g          := gofast.Bootstrap()
+    router     := g.GetRouter()
+    templating := g.GetTemplating()
+
+    templating.SetDirectory("dviews")
 
     router.Add("index", "/", func(w http.ResponseWriter, r *http.Request) {
         t1 := time.Now()
