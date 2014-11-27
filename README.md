@@ -21,3 +21,19 @@ $ go run example.go
 2014/11/22 12:24:55 [GET] "/" (time: 11.188us)
 2014/11/22 12:24:55 [GET] "/favicon.ico" (time: 4.636us)
 ```
+
+Running example
+---------------
+
+Using the `example.go` file given in this repository, here is the result:
+
+```bash
+> $ curl -X GET http://127.0.0.1:8080/
+Welcome to the index template!
+
+> $ curl -X GET http://127.0.0.1:8080/toto
+0 + 0 = Toto
+
+> $ curl -X POST http://127.0.0.1:8080/post
+POST method handled!
+```

@@ -7,9 +7,6 @@ package main
 import (
     "./lib"
     "net/http"
-    "fmt"
-    "time"
-    "log"
 )
 
 func main() {
@@ -17,17 +14,18 @@ func main() {
     router     := g.GetRouter()
     templating := g.GetTemplating()
 
-    templating.SetDirectory("dviews")
+    templating.SetDirectory("views")
 
-    router.Add("index", "/", func(w http.ResponseWriter, r *http.Request) {
-        t1 := time.Now()
-        fmt.Fprintf(w, "<h1>Welcome!</h1>")
-        t2 := time.Now()
-        log.Printf("[%s] %q (time: %v)\n", r.Method, r.URL.String(), t2.Sub(t1))
+    router.Get("index", "/", func(w http.ResponseWriter, r *http.Request) {
+        templating.Render(w, "index.html")
     })
 
-    router.Add("toto", "/toto", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "<h1>Toto webpage!</h1>")
+    router.Get("toto", "/toto", func(w http.ResponseWriter, r *http.Request) {
+        templating.Render(w, "toto.html")
+    })
+
+    router.Post("post", "/post", func(w http.ResponseWriter, r *http.Request) {
+        templating.Render(w, "post.html")
     })
 
     g.Handle()

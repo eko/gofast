@@ -27,8 +27,8 @@ func Bootstrap() gofast {
     log.Printf("gofast v%s", VERSION)
 
     logger     := log.New(os.Stdout, "[gofast]", 0)
-    router     := NewRouter()
     templating := NewTemplating()
+    router     := NewRouter(templating)
 
     return gofast{logger, router, templating}
 }

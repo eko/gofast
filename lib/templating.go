@@ -5,8 +5,10 @@
 package gofast
 
 import (
-    "errors"
+    "github.com/flosch/pongo2"
+    "net/http"
     "fmt"
+    "log"
     "os"
 )
 
@@ -23,7 +25,8 @@ func NewTemplating() templating {
 func (t *templating) SetDirectory(name string) {
     if _, err := os.Stat(name); err != nil {
         if os.IsNotExist(err) {
-            errors.New(fmt.Sprintf("Directory '%s' does not exists", name))
+            log.Printf("Directory '%s' does not exists", name)
+            os.Exit(1)
         }
     }
 
@@ -33,4 +36,19 @@ func (t *templating) SetDirectory(name string) {
 // Returns templating base directory
 func (t *templating) GetDirectory() string {
     return t.directory
+}
+
+// Renders a template
+func (t *templating) Render(w http.ResponseWriter, name string) {
+    var filename = fmt.Sprintf("%s/%s", t.GetDirectory(), name)
+
+    if _, err := os.Stat(filename); err != nil {
+        if os.IsNotExist(err) {
+            log.Printf("View '%s' does not exists", filename)
+            os.Exit(1)
+        }
+    }
+
+    var template = pongo2.Must(pongo2.FromFile(filename))
+    template.ExecuteWriter(pongo2.Context{}, w)
 }
