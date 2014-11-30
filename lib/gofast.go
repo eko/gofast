@@ -12,6 +12,7 @@ import(
 )
 
 const (
+    PORT    string = ":8080"
     VERSION string = "1.0-beta"
 )
 
@@ -50,7 +51,7 @@ func (g *gofast) Handle() {
         http.HandleFunc(route.pattern, g.HandleRequest(route))
     }
 
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(PORT, nil)
 }
 
 // Handles an HTTP request by logging calls
