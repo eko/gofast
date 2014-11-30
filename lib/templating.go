@@ -39,7 +39,7 @@ func (t *templating) GetDirectory() string {
 }
 
 // Renders a template
-func (t *templating) Render(w http.ResponseWriter, name string) {
+func (t *templating) Render(res http.ResponseWriter, name string) {
     var filename = fmt.Sprintf("%s/%s", t.GetDirectory(), name)
 
     if _, err := os.Stat(filename); err != nil {
@@ -50,5 +50,5 @@ func (t *templating) Render(w http.ResponseWriter, name string) {
     }
 
     var template = pongo2.Must(pongo2.FromFile(filename))
-    template.ExecuteWriter(pongo2.Context{}, w)
+    template.ExecuteWriter(pongo2.Context{}, res)
 }

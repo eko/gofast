@@ -3,11 +3,14 @@ Gofast - A simple Go micro-framework
 
 This is a micro-framework I wrote in order to train to Golang language.
 
+This project uses "pongo2" library for rendering templates (compatible with Django Jinja templates)
+
 Installation
 ------------
 
 ```bash
 $ git clone git@github.com:eko/gofast.git
+$ go get -u github.com/flosch/pongo2
 ```
 
 Example

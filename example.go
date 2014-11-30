@@ -16,16 +16,16 @@ func main() {
 
     templating.SetDirectory("views")
 
-    router.Get("index", "/", func(w http.ResponseWriter, r *http.Request) {
-        templating.Render(w, "index.html")
+    router.Get("index", "/", func(res http.ResponseWriter, req *http.Request) {
+        templating.Render(res, "index.html")
     })
 
-    router.Get("toto", "/toto", func(w http.ResponseWriter, r *http.Request) {
-        templating.Render(w, "toto.html")
+    router.Get("toto", "/toto", func(res http.ResponseWriter, req *http.Request) {
+        templating.Render(res, "toto.html")
     })
 
-    router.Post("post", "/post", func(w http.ResponseWriter, r *http.Request) {
-        templating.Render(w, "post.html")
+    router.Post("post", "/post", func(res http.ResponseWriter, req *http.Request) {
+        templating.Render(res, "post.html")
     })
 
     g.Handle()

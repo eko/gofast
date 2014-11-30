@@ -6,13 +6,10 @@ package gofast
 
 import (
     "net/http"
-    "time"
-    "log"
 )
 
 type router struct {
-    templating templating
-    routes     []route
+    routes []route
 }
 
 type route struct {
@@ -22,14 +19,14 @@ type route struct {
     handler    handler
 }
 
-type handler func(w http.ResponseWriter, r *http.Request)
+type handler func(res http.ResponseWriter, req *http.Request)
 
 // Creates a new router component instance
-func NewRouter(t templating) router {
-    return router{templating: t, routes: make([]route, 0)}
+func NewRouter() router {
+    return router{routes: make([]route, 0)}
 }
 
-// Add different HTTP methods route
+// Adds different HTTP methods route
 func (r *router) Get(name string, pattern string, handler handler) {
     r.Add("GET", name, pattern, handler)
 }
@@ -66,18 +63,6 @@ func (r *router) All(name string, pattern string, handler handler) {
 func (r *router) Add(method string, name string, pattern string, handler handler) {
     route := route{method, name, pattern, handler}
     r.routes = append(r.routes, route)
-
-    requestHandler := func(w http.ResponseWriter, r *http.Request) {
-        if (r.Method == method) {
-            t1 := time.Now()
-            handler(w, r)
-            t2 := time.Now()
-
-            log.Printf("[%s] %q (time: %v)\n", r.Method, r.URL.String(), t2.Sub(t1))
-        }
-    }
-
-    http.HandleFunc(pattern, requestHandler)
 }
 
 // Returns all routes available in router
