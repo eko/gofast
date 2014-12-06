@@ -36,9 +36,15 @@ Using the `example.go` file given in this repository, here is the result:
 > $ curl -X GET http://127.0.0.1:8080/
 Welcome to the index template!
 
-> $ curl -X GET http://127.0.0.1:8080/toto
+<strong>Route name</strong>: index
+
+> $ curl -X GET http://127.0.0.1:8080/toto/1
 0 + 0 = Toto
+
+<strong>Route name</strong>: toto
 
 > $ curl -X POST http://127.0.0.1:8080/post
 POST method handled!
+
+<strong>Route name</strong>: post
 ```

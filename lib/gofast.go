@@ -5,10 +5,7 @@
 package gofast
 
 import(
-    "net/http"
     "log"
-    "os"
-    "time"
 )
 
 const (
@@ -17,52 +14,21 @@ const (
 )
 
 type gofast struct {
-    logger     *log.Logger
-    router     *router
-    templating templating
+    context *context
 }
 
 type requestHandler func()
 
 // Bootstraps a new instance
-func Bootstrap() gofast {
+func Bootstrap() *gofast {
     log.Printf("gofast v%s", VERSION)
 
-    logger     := log.New(os.Stdout, "[gofast]", 0)
-    templating := NewTemplating()
-    router     := NewRouter()
+    context := NewContext()
 
-    return gofast{logger, &router, templating}
+    return &gofast{&context}
 }
 
-// Returns router component
-func (g *gofast) GetRouter() *router {
-    return g.router
-}
-
-// Returns templating component
-func (g *gofast) GetTemplating() templating {
-    return g.templating
-}
-
-// Handles HTTP requests
-func (g *gofast) Handle() {
-    for _, route := range g.GetRouter().GetRoutes() {
-        http.HandleFunc(route.pattern, g.HandleRequest(route))
-    }
-
-    http.ListenAndServe(PORT, nil)
-}
-
-// Handles an HTTP request by logging calls
-func (g *gofast) HandleRequest(route route) http.HandlerFunc {
-    return func (res http.ResponseWriter, req *http.Request) {
-        if (req.Method == route.method) {
-            startTime := time.Now()
-            route.handler(res, req)
-            stopTime := time.Now()
-
-            log.Printf("[%s] %q (time: %v)\n", req.Method, req.URL.String(), stopTime.Sub(startTime))
-        }
-    }
+// Returns context instance
+func (g *gofast) GetContext() *context {
+    return g.context
 }

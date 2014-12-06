@@ -26,23 +26,23 @@ func TestAllAddMethods(t *testing.T) {
     }
 
     route := router.GetRoute("get")
-    if (route.method != "GET" || route.pattern != "/get") { t.Fail() }
+    if (route.method != "GET" || route.pattern.String() != "/get") { t.Fail() }
 
     route = router.GetRoute("post")
-    if (route.method != "POST" || route.pattern != "/post") { t.Fail() }
+    if (route.method != "POST" || route.pattern.String() != "/post") { t.Fail() }
 
     route = router.GetRoute("patch")
-    if (route.method != "PATCH" || route.pattern != "/patch") { t.Fail() }
+    if (route.method != "PATCH" || route.pattern.String() != "/patch") { t.Fail() }
 
     route = router.GetRoute("put")
-    if (route.method != "PUT" || route.pattern != "/put") { t.Fail() }
+    if (route.method != "PUT" || route.pattern.String() != "/put") { t.Fail() }
 
     route = router.GetRoute("delete")
-    if (route.method != "DELETE" || route.pattern != "/delete") { t.Fail() }
+    if (route.method != "DELETE" || route.pattern.String() != "/delete") { t.Fail() }
 
     route = router.GetRoute("options")
-    if (route.method != "OPTIONS" || route.pattern != "/options") { t.Fail() }
+    if (route.method != "OPTIONS" || route.pattern.String() != "/options") { t.Fail() }
 
     route = router.GetRoute("head")
-    if (route.method != "HEAD" || route.pattern != "/head") { t.Fail() }
+    if (route.method != "HEAD" || route.pattern.String() != "/head") { t.Fail() }
 }

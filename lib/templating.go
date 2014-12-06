@@ -6,7 +6,6 @@ package gofast
 
 import (
     "github.com/flosch/pongo2"
-    "net/http"
     "fmt"
     "log"
     "os"
@@ -39,7 +38,7 @@ func (t *templating) GetDirectory() string {
 }
 
 // Renders a template
-func (t *templating) Render(res http.ResponseWriter, name string) {
+func (t *templating) Render(context *context, name string) {
     var filename = fmt.Sprintf("%s/%s", t.GetDirectory(), name)
 
     if _, err := os.Stat(filename); err != nil {
@@ -50,5 +49,5 @@ func (t *templating) Render(res http.ResponseWriter, name string) {
     }
 
     var template = pongo2.Must(pongo2.FromFile(filename))
-    template.ExecuteWriter(pongo2.Context{}, res)
+    template.ExecuteWriter(pongo2.Context{"context": context}, context.GetResponse())
 }
