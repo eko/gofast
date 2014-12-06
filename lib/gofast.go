@@ -17,8 +17,6 @@ type gofast struct {
     context *context
 }
 
-type requestHandler func()
-
 // Bootstraps a new instance
 func Bootstrap() *gofast {
     log.Printf("gofast v%s", VERSION)
