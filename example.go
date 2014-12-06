@@ -6,7 +6,6 @@ package main
 
 import (
     "./lib"
-    "net/http"
 )
 
 func main() {
@@ -16,16 +15,27 @@ func main() {
 
     templating.SetDirectory("views")
 
-    router.Get("index", "/", func(res http.ResponseWriter, req *http.Request) {
+    router.Get("index", "/", func() {
         templating.Render(c, "index.html")
     })
 
-    router.Get("toto", "/toto/[0-9]+", func(res http.ResponseWriter, req *http.Request) {
+    router.Post("post", "/post", func() {
+        templating.Render(c, "post.html")
+    })
+
+    router.Get("toto", "/toto/([0-9]+)", func() {
+        request  := c.GetRequest()
+
+        pattern := request.GetRoute().GetPattern()
+        url     := request.GetHttpRequest().URL.Path
+
+        request.AddParameter("identifier", pattern.FindStringSubmatch(url)[1])
+
         templating.Render(c, "toto.html")
     })
 
-    router.Post("post", "/post", func(res http.ResponseWriter, req *http.Request) {
-        templating.Render(c, "post.html")
+    router.Get("test404", "/test404", func() {
+        c.GetResponse().SetStatusCode(404)
     })
 
     c.Handle()

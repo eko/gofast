@@ -4,7 +4,6 @@
 
 package gofast
 
-
 import(
     "net/http"
     "log"
@@ -40,6 +39,8 @@ func (c *context) GetRequest() *request {
 
 // Sets a HTTP response instance
 func (c *context) SetResponse(res http.ResponseWriter) {
+    res.Header().Set("Content-Type", "text/html; charset: utf-8")
+
     response := NewResponse(res)
     c.response = &response
 }
@@ -71,15 +72,13 @@ func (c *context) ServeHTTP(res http.ResponseWriter, req *http.Request) {
     for _, route := range c.GetRouter().GetRoutes() {
         if req.Method == route.method && route.pattern.MatchString(req.URL.Path) {
             c.SetRequest(req, route)
-
-            res.Header().Set("Content-Type", "text/html; charset: utf-8")
             c.SetResponse(res)
 
             startTime := time.Now()
-            route.handler(res, req)
+            route.handler()
             stopTime := time.Now()
 
-            log.Printf("[%s] %q (time: %v)\n", req.Method, req.URL.String(), stopTime.Sub(startTime))
+            log.Printf("[%s] %v %q (time: %v)\n", req.Method, c.GetResponse().GetStatusCode(), req.URL.String(), stopTime.Sub(startTime))
             break
         }
     }

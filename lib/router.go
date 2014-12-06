@@ -5,7 +5,6 @@
 package gofast
 
 import (
-    "net/http"
     "regexp"
 )
 
@@ -22,7 +21,7 @@ type route struct {
 
 type RouteLen []route
 
-type handler func(res http.ResponseWriter, req *http.Request)
+type handler func()
 
 // Creates a new router component instance
 func NewRouter() router {
@@ -84,6 +83,11 @@ func (r *router) GetRoute(name string) route {
     }
 
     return result
+}
+
+// Returns a route pattern
+func (r *route) GetPattern() *regexp.Regexp {
+    return r.pattern
 }
 
 // Route sort functions

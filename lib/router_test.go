@@ -5,7 +5,6 @@
 package gofast
 
 import (
-    "net/http"
     "testing"
 )
 
@@ -13,13 +12,13 @@ import (
 func TestAllAddMethods(t *testing.T) {
     router := NewRouter()
 
-    router.Get("get", "/get", func(res http.ResponseWriter, req *http.Request) {})
-    router.Post("post", "/post", func(res http.ResponseWriter, req *http.Request) {})
-    router.Patch("patch", "/patch", func(res http.ResponseWriter, req *http.Request) {})
-    router.Put("put", "/put", func(res http.ResponseWriter, req *http.Request) {})
-    router.Delete("delete", "/delete", func(res http.ResponseWriter, req *http.Request) {})
-    router.Options("options", "/options", func(res http.ResponseWriter, req *http.Request) {})
-    router.Head("head", "/head", func(res http.ResponseWriter, req *http.Request) {})
+    router.Get("get", "/get", func() {})
+    router.Post("post", "/post", func() {})
+    router.Patch("patch", "/patch", func() {})
+    router.Put("put", "/put", func() {})
+    router.Delete("delete", "/delete", func() {})
+    router.Options("options", "/options", func() {})
+    router.Head("head", "/head", func() {})
 
     if (7 != len(router.GetRoutes())) {
         t.Fail()
