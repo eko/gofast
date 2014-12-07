@@ -13,7 +13,8 @@ func main() {
     router     := c.GetRouter()
     templating := c.GetTemplating()
 
-    templating.SetDirectory("views")
+    templating.SetAssetsDirectory("assets")
+    templating.SetViewsDirectory("views")
 
     router.Get("index", "/", func() {
         templating.Render(c, "index.html")
