@@ -12,7 +12,8 @@ import (
 )
 
 type templating struct {
-    directory string
+    viewsDirectory string
+    assetsDirectory string
 }
 
 // Creates a new templating component instance
@@ -20,8 +21,8 @@ func NewTemplating() templating {
     return templating{}
 }
 
-// Sets templating base directory
-func (t *templating) SetDirectory(name string) {
+// Sets templating views directory
+func (t *templating) SetViewsDirectory(name string) {
     if _, err := os.Stat(name); err != nil {
         if os.IsNotExist(err) {
             log.Printf("Directory '%s' does not exists", name)
@@ -29,17 +30,34 @@ func (t *templating) SetDirectory(name string) {
         }
     }
 
-    t.directory = name
+    t.viewsDirectory = name
 }
 
-// Returns templating base directory
-func (t *templating) GetDirectory() string {
-    return t.directory
+// Returns templating views directory
+func (t *templating) GetViewsDirectory() string {
+    return t.viewsDirectory
+}
+
+// Sets templating assets directory
+func (t *templating) SetAssetsDirectory(name string) {
+    if _, err := os.Stat(name); err != nil {
+        if os.IsNotExist(err) {
+            log.Printf("Directory '%s' does not exists", name)
+            os.Exit(1)
+        }
+    }
+
+    t.assetsDirectory = name
+}
+
+// Returns templating assets directory
+func (t *templating) GetAssetsDirectory() string {
+    return t.assetsDirectory
 }
 
 // Renders a template
 func (t *templating) Render(context *context, name string) {
-    var filename = fmt.Sprintf("%s/%s", t.GetDirectory(), name)
+    var filename = fmt.Sprintf("%s/%s", t.GetViewsDirectory(), name)
 
     if _, err := os.Stat(filename); err != nil {
         if os.IsNotExist(err) {
@@ -51,6 +69,7 @@ func (t *templating) Render(context *context, name string) {
     var template = pongo2.Must(pongo2.FromFile(filename))
     template.ExecuteWriter(pongo2.Context{
         "request": context.GetRequest(),
+        "router": context.GetRouter(),
         "response": context.GetResponse(),
     }, context.GetResponse())
 }

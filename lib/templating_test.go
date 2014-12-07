@@ -10,13 +10,18 @@ import (
 )
 
 // Tests directory setter/getter
-func TestSetDirectory(t *testing.T) {
+func TestSetDirectories(t *testing.T) {
     c := NewContext()
     templating := c.GetTemplating()
 
-    templating.SetDirectory("../views")
+    templating.SetAssetsDirectory("../assets")
+    templating.SetViewsDirectory("../views")
 
-    if ("../views" != templating.GetDirectory()) {
+    if ("../assets" != templating.GetAssetsDirectory()) {
+        t.Fail()
+    }
+
+    if ("../views" != templating.GetViewsDirectory()) {
         t.Fail()
     }
 }
@@ -26,7 +31,7 @@ func TestRender(t *testing.T) {
     c := Bootstrap().GetContext()
 
     templating := c.GetTemplating()
-    templating.SetDirectory("../views")
+    templating.SetViewsDirectory("../views")
 
     http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
         templating.Render(c, "index.html")

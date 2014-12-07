@@ -9,13 +9,14 @@ import(
     "log"
     "sort"
     "time"
+    "fmt"
 )
 
 type context struct {
     request    *request
     response   *response
     router     *router
-    templating templating
+    templating *templating
 }
 
 // Creates a new context component instance
@@ -23,7 +24,7 @@ func NewContext() context {
     router     := NewRouter()
     templating := NewTemplating()
 
-    return context{router: &router, templating: templating}
+    return context{router: &router, templating: &templating}
 }
 
 // Sets a HTTP request instance
@@ -56,15 +57,22 @@ func (c *context) GetRouter() *router {
 }
 
 // Returns a templating component instance
-func (c *context) GetTemplating() templating {
+func (c *context) GetTemplating() *templating {
     return c.templating
 }
 
 // Handles HTTP requests
 func (c *context) Handle() {
     sort.Sort(RouteLen(c.GetRouter().GetRoutes()))
+    http.Handle("/", c)
 
-    http.ListenAndServe(PORT, c)
+    assetsDirectory := c.GetTemplating().GetAssetsDirectory()
+    assetsUrl       := fmt.Sprintf("/%s/", assetsDirectory)
+    assetsPrefix    := fmt.Sprintf("/%s", assetsDirectory)
+
+    http.Handle(assetsUrl, http.StripPrefix(assetsPrefix, http.FileServer(http.Dir(assetsDirectory))))
+
+    http.ListenAndServe(PORT, nil)
 }
 
 // Serves HTTP request by matching the correct route
