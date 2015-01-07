@@ -69,7 +69,7 @@ func (t *templating) Render(context *context, name string) {
     var template = pongo2.Must(pongo2.FromFile(filename))
     template.ExecuteWriter(pongo2.Context{
         "request": context.GetRequest(),
-        "router": context.GetRouter(),
         "response": context.GetResponse(),
+        "router": context.GetRouter(),
     }, context.GetResponse())
 }

@@ -15,35 +15,67 @@ $ git clone git@github.com:eko/gofast.git
 $ go get -u github.com/flosch/pongo2
 ```
 
-Example
--------
-
-You can find an application example in `example.go` file and run it simply by typing:
+Running an application
+----------------------
 
 ```bash
-$ go run example.go
+$ go run app.go
 2014/12/06 15:40:28 gofast v1.0-beta
 2014/12/06 15:40:32 [GET] 200 "/" (time: 143.238us)
 ```
 
-Running example
----------------
+A simple application example
+----------------------------
 
-Using the `example.go` file given in this repository, here is the result:
+```go
+package main
+
+import (
+    "./lib"
+)
+
+func main() {
+    c          := gofast.Bootstrap().GetContext()
+    router     := c.GetRouter()
+    templating := c.GetTemplating()
+
+    templating.SetAssetsDirectory("assets")
+    templating.SetViewsDirectory("views")
+
+    router.Get("homepage", "/", func() {
+        templating.Render(c, "index.html")
+    })
+
+    router.Post("add", "/add/([0-9]+)", func() {
+        request  := c.GetRequest()
+
+        pattern := request.GetRoute().GetPattern()
+        url     := request.GetHttpRequest().URL.Path
+
+        request.AddParameter("name", pattern.FindStringSubmatch(url)[1])
+
+        // ... your custom code
+
+        templating.Render(c, "add.html")
+    })
+
+    router.Get("test404", "/test404", func() {
+        c.GetResponse().SetStatusCode(404)
+    })
+
+    c.Handle()
+}
+```
+
+Requesting this example
+-----------------------
+
+Using the example given below, here is the request results:
 
 ```bash
 > $ curl -X GET http://127.0.0.1:8080/
 <h1>Welcome to the index template!</h1>
 
-<strong>Route name</strong>: index
-
-> $ curl -X GET http://127.0.0.1:8080/toto/1
-<h1>Toto #1</h1>
-
-<strong>Route name</strong>: toto
-
-> $ curl -X POST http://127.0.0.1:8080/post
-POST method handled!
-
-<strong>Route name</strong>: post
+> $ curl -X POST http://127.0.0.1:8080/add/toto
+<h1>Added: toto</h1>
 ```

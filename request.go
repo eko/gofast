@@ -16,7 +16,7 @@ type request struct {
 
 type parameter struct {
     name  string
-    value string
+    value interface{}
 }
 
 // Creates a new request component instance
@@ -35,13 +35,13 @@ func (r *request) GetRoute() *route {
 }
 
 // Adds a request parameter
-func (r *request) AddParameter(name string, value string) {
+func (r *request) AddParameter(name string, value interface{}) {
     r.parameters = append(r.parameters, parameter{name, value})
 }
 
 // Returns a request parameter from given name
-func (r *request) GetParameter(name string) string {
-    var result string
+func (r *request) GetParameter(name string) interface{} {
+    var result interface{}
 
     for _, parameter := range r.parameters {
         if (parameter.name == name) {

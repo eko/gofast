@@ -9,4 +9,4 @@ go:
 install:
   - go get github.com/flosch/pongo2
 
-script: cd lib && go test -v
+script: go test -v
