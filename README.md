@@ -31,7 +31,7 @@ A simple application example
 package main
 
 import (
-    "./lib"
+    "github.com/eko/gofast"
 )
 
 func main() {
