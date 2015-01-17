@@ -27,6 +27,8 @@ $ go run app.go
 A simple application example
 ----------------------------
 
+Because an example will explain it better, here is an application example with things you can do with Gofast:
+
 ```go
 package main
 
@@ -42,10 +44,17 @@ func main() {
     templating.SetAssetsDirectory("assets")
     templating.SetViewsDirectory("views")
 
+    // This add a fallback route for 404 (not found) resources
+    router.SetFallback(func() {
+        templating.Render(c, "404.html")
+    })
+
+    // You can add a simple GET route
     router.Get("homepage", "/", func() {
         templating.Render(c, "index.html")
     })
 
+    // ... or add a more complex POST route with a URL parameter
     router.Post("add", "/add/([0-9]+)", func() {
         request  := c.GetRequest()
 
@@ -59,8 +68,9 @@ func main() {
         templating.Render(c, "add.html")
     })
 
-    router.Get("test404", "/test404", func() {
-        c.GetResponse().SetStatusCode(404)
+    // If you call the /test418 URL, a 418 (I'm a teapot) status code will be rendered
+    router.Get("test418", "/test418", func() {
+        c.GetResponse().SetStatusCode(418)
     })
 
     c.Handle()

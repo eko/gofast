@@ -45,3 +45,16 @@ func TestAllAddMethods(t *testing.T) {
     route = router.GetRoute("head")
     if (route.method != "HEAD" || route.pattern.String() != "/head") { t.Fail() }
 }
+
+// Tests adding a fallback route
+func TestFallbackRoute(t *testing.T) {
+    router := NewRouter()
+
+    router.SetFallback(func() {})
+
+    fallback := router.GetFallback()
+
+    if "fallback" != fallback.name {
+        t.Fail()
+    }
+}

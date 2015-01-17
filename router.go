@@ -85,6 +85,16 @@ func (r *router) GetRoute(name string) route {
     return result
 }
 
+// Sets route fallback (for 404 error pages)
+func (r *router) SetFallback(handler handler) {
+    r.Add("*", "fallback", "/", handler)
+}
+
+// Returns fallback route (for 404 error pages)
+func (r *router) GetFallback() route {
+    return r.GetRoute("fallback")
+}
+
 // Returns a route pattern
 func (r *route) GetPattern() *regexp.Regexp {
     return r.pattern

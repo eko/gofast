@@ -77,16 +77,25 @@ func (c *context) Handle() {
 
 // Serves HTTP request by matching the correct route
 func (c *context) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-    for _, route := range c.GetRouter().GetRoutes() {
+    router := c.GetRouter()
+    fallbackRoute := router.GetFallback()
+
+    for _, route := range router.GetRoutes() {
         if req.Method == route.method && route.pattern.MatchString(req.URL.Path) {
             c.SetRequest(req, route)
             c.SetResponse(res)
 
             startTime := time.Now()
+
+            if (fallbackRoute.name == "fallback" && req.URL.Path != "/" && route.pattern.String() == "/") {
+                route = fallbackRoute
+            }
+
             route.handler()
+
             stopTime := time.Now()
 
-            log.Printf("[%s] %v %q (time: %v)\n", req.Method, c.GetResponse().GetStatusCode(), req.URL.String(), stopTime.Sub(startTime))
+            log.Printf("[%s] %v | route: '%s' | url: %q (time: %v)\n", req.Method, c.GetResponse().GetStatusCode(), route.name, req.URL.String(), stopTime.Sub(startTime))
             break
         }
     }
