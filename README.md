@@ -46,6 +46,7 @@ func main() {
 
     // This add a fallback route for 404 (not found) resources
     router.SetFallback(func() {
+        c.GetResponse().SetStatusCode(404)
         templating.Render(c, "404.html")
     })
 
@@ -66,11 +67,6 @@ func main() {
         // ... your custom code
 
         templating.Render(c, "add.html")
-    })
-
-    // If you call the /test418 URL, a 418 (I'm a teapot) status code will be rendered
-    router.Get("test418", "/test418", func() {
-        c.GetResponse().SetStatusCode(418)
     })
 
     c.Handle()
