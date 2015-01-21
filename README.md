@@ -24,6 +24,12 @@ $ go run app.go
 2014/12/06 15:40:32 [GET] 200 "/" (time: 143.238us)
 ```
 
+This will run the application on port 8080. Optionnaly, you can provide a port number this way:
+
+```bash
+PORT=8005 go run app.go
+```
+
 A simple application example
 ----------------------------
 

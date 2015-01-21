@@ -10,6 +10,7 @@ import(
     "sort"
     "time"
     "fmt"
+    "os"
 )
 
 type context struct {
@@ -72,7 +73,13 @@ func (c *context) Handle() {
 
     http.Handle(assetsUrl, http.StripPrefix(assetsPrefix, http.FileServer(http.Dir(assetsDirectory))))
 
-    http.ListenAndServe(PORT, nil)
+    port := PORT
+
+    if p := os.Getenv("PORT"); p != "" {
+        port = fmt.Sprintf(":%s", p)
+    }
+
+    http.ListenAndServe(port, nil)
 }
 
 // Serves HTTP request by matching the correct route
