@@ -1,6 +1,7 @@
 Gofast - A simple Go micro-framework
 ====================================
 
+[![GoDoc](https://godoc.org/github.com/eko/gofast?status.png)](https://godoc.org/github.com/eko/gofast)
 [![Build Status](https://secure.travis-ci.org/eko/gofast.png?branch=master)](http://travis-ci.org/eko/gofast)
 
 This is a micro-framework I wrote in order to train to Golang language.
