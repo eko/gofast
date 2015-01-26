@@ -21,14 +21,14 @@ Running an application
 
 ```bash
 $ go run app.go
-2014/12/06 15:40:28 gofast v1.0-beta
-2014/12/06 15:40:32 [GET] 200 "/" (time: 143.238us)
+2015/01/26 21:57:35 gofast v1.0-beta
+2015/01/26 21:57:48 [POST] 200 | route: 'add' | url: "/add/toto" (time: 143.238us)
 ```
 
 This will run the application on port 8080. Optionnaly, you can provide a port number this way:
 
 ```bash
-PORT=8005 go run app.go
+$ PORT=8005 go run app.go
 ```
 
 A simple application example
@@ -44,26 +44,26 @@ import (
 )
 
 func main() {
-    c          := gofast.Bootstrap().GetContext()
-    router     := c.GetRouter()
-    templating := c.GetTemplating()
+    g          := gofast.Bootstrap()
+    router     := g.GetRouter()
+    templating := g.GetTemplating()
 
     templating.SetAssetsDirectory("assets")
     templating.SetViewsDirectory("views")
 
     // This add a fallback route for 404 (not found) resources
-    router.SetFallback(func() {
+    router.SetFallback(func(c Context) {
         c.GetResponse().SetStatusCode(404)
         templating.Render(c, "404.html")
     })
 
     // You can add a simple GET route
-    router.Get("homepage", "/", func() {
+    router.Get("homepage", "/", func(c Context) {
         templating.Render(c, "index.html")
     })
 
     // ... or add a more complex POST route with a URL parameter
-    router.Post("add", "/add/([0-9]+)", func() {
+    router.Post("add", "/add/([a-zA-Z]+)", func(c Context) {
         request  := c.GetRequest()
 
         pattern := request.GetRoute().GetPattern()

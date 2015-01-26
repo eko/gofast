@@ -8,73 +8,73 @@ import (
     "regexp"
 )
 
-type router struct {
-    routes []route
+type Router struct {
+    routes []Route
 }
 
-type route struct {
+type Route struct {
     method     string
     name       string
     pattern    *regexp.Regexp
-    handler    handler
+    handler    Handler
 }
 
-type RouteLen []route
+type RouteLen []Route
 
-type handler func()
+type Handler func(context Context)
 
 // Creates a new router component instance
-func NewRouter() router {
-    return router{routes: make([]route, 0)}
+func NewRouter() Router {
+    return Router{routes: make([]Route, 0)}
 }
 
 // Adds different HTTP methods route
-func (r *router) Get(name string, pattern string, handler handler) {
+func (r *Router) Get(name string, pattern string, handler Handler) {
     r.Add("GET", name, pattern, handler)
 }
 
-func (r *router) Patch(name string, pattern string, handler handler) {
+func (r *Router) Patch(name string, pattern string, handler Handler) {
     r.Add("PATCH", name, pattern, handler)
 }
 
-func (r *router) Post(name string, pattern string, handler handler) {
+func (r *Router) Post(name string, pattern string, handler Handler) {
     r.Add("POST", name, pattern, handler)
 }
 
-func (r *router) Put(name string, pattern string, handler handler) {
+func (r *Router) Put(name string, pattern string, handler Handler) {
     r.Add("PUT", name, pattern, handler)
 }
 
-func (r *router) Delete(name string, pattern string, handler handler) {
+func (r *Router) Delete(name string, pattern string, handler Handler) {
     r.Add("DELETE", name, pattern, handler)
 }
 
-func (r *router) Options(name string, pattern string, handler handler) {
+func (r *Router) Options(name string, pattern string, handler Handler) {
     r.Add("OPTIONS", name, pattern, handler)
 }
 
-func (r *router) Head(name string, pattern string, handler handler) {
+func (r *Router) Head(name string, pattern string, handler Handler) {
     r.Add("HEAD", name, pattern, handler)
 }
 
-func (r *router) All(name string, pattern string, handler handler) {
+func (r *Router) All(name string, pattern string, handler Handler) {
     r.Add("*", name, pattern, handler)
 }
 
 // Adds a new route to router
-func (r *router) Add(method string, name string, pattern string, handler handler) {
-    route := route{method, name, regexp.MustCompile(pattern), handler}
+func (r *Router) Add(method string, name string, pattern string, handler Handler) {
+    route := Route{method, name, regexp.MustCompile(pattern), handler}
     r.routes = append(r.routes, route)
 }
 
 // Returns all routes available in router
-func (r *router) GetRoutes() []route {
+func (r *Router) GetRoutes() []Route {
     return r.routes
 }
 
-// Returns a route from given name
-func (r *router) GetRoute(name string) route {
-    var result route
+// Returns a Route from given name
+func (r *Router) GetRoute(name string) Route {
+    var result Route
 
     for _, route := range r.routes {
         if (route.name == name) {
@@ -86,17 +86,17 @@ func (r *router) GetRoute(name string) route {
 }
 
 // Sets route fallback (for 404 error pages)
-func (r *router) SetFallback(handler handler) {
+func (r *Router) SetFallback(handler Handler) {
     r.Add("*", "fallback", "/", handler)
 }
 
 // Returns fallback route (for 404 error pages)
-func (r *router) GetFallback() route {
+func (r *Router) GetFallback() Route {
     return r.GetRoute("fallback")
 }
 
 // Returns a route pattern
-func (r *route) GetPattern() *regexp.Regexp {
+func (r *Route) GetPattern() *regexp.Regexp {
     return r.pattern
 }
 

@@ -8,39 +8,39 @@ import (
     "net/http"
 )
 
-type request struct {
+type Request struct {
     httpRequest *http.Request
-    route       *route
-    parameters  []parameter
+    route       *Route
+    parameters  []Parameter
 }
 
-type parameter struct {
+type Parameter struct {
     name  string
     value interface{}
 }
 
-// Creates a new request component instance
-func NewRequest(req *http.Request, route route) request {
-    return request{req, &route, make([]parameter, 0)}
+// Creates a new Request component instance
+func NewRequest(req *http.Request, route Route) Request {
+    return Request{req, &route, make([]Parameter, 0)}
 }
 
 // Returs HTTP request
-func (r *request) GetHttpRequest() *http.Request {
+func (r *Request) GetHttpRequest() *http.Request {
     return r.httpRequest
 }
 
 // Returns current route
-func (r *request) GetRoute() *route {
+func (r *Request) GetRoute() *Route {
     return r.route
 }
 
 // Adds a request parameter
-func (r *request) AddParameter(name string, value interface{}) {
-    r.parameters = append(r.parameters, parameter{name, value})
+func (r *Request) AddParameter(name string, value interface{}) {
+    r.parameters = append(r.parameters, Parameter{name, value})
 }
 
 // Returns a request parameter from given name
-func (r *request) GetParameter(name string) interface{} {
+func (r *Request) GetParameter(name string) interface{} {
     var result interface{}
 
     for _, parameter := range r.parameters {

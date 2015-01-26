@@ -8,23 +8,23 @@ import (
     "net/http"
 )
 
-type response struct {
+type Response struct {
     http.ResponseWriter
     statusCode int
 }
 
-// Creates a new response component instance
-func NewResponse(res http.ResponseWriter) response {
-    return response{res, 200}
+// Creates a new Response component instance
+func NewResponse(res http.ResponseWriter) Response {
+    return Response{res, 200}
 }
 
-// Sets response status code
-func (r *response) SetStatusCode(statusCode int) {
+// Sets Response status code
+func (r *Response) SetStatusCode(statusCode int) {
     r.WriteHeader(statusCode)
     r.statusCode = statusCode
 }
 
-// Returns response status code
-func (r *response) GetStatusCode() int {
+// Returns Response status code
+func (r *Response) GetStatusCode() int {
     return r.statusCode
 }

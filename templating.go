@@ -11,18 +11,18 @@ import (
     "os"
 )
 
-type templating struct {
-    viewsDirectory string
+type Templating struct {
+    viewsDirectory  string
     assetsDirectory string
 }
 
 // Creates a new templating component instance
-func NewTemplating() templating {
-    return templating{}
+func NewTemplating() Templating {
+    return Templating{}
 }
 
 // Sets templating views directory
-func (t *templating) SetViewsDirectory(name string) {
+func (t *Templating) SetViewsDirectory(name string) {
     if _, err := os.Stat(name); err != nil {
         if os.IsNotExist(err) {
             log.Printf("Directory '%s' does not exists", name)
@@ -34,12 +34,12 @@ func (t *templating) SetViewsDirectory(name string) {
 }
 
 // Returns templating views directory
-func (t *templating) GetViewsDirectory() string {
+func (t *Templating) GetViewsDirectory() string {
     return t.viewsDirectory
 }
 
 // Sets templating assets directory
-func (t *templating) SetAssetsDirectory(name string) {
+func (t *Templating) SetAssetsDirectory(name string) {
     if _, err := os.Stat(name); err != nil {
         if os.IsNotExist(err) {
             log.Printf("Directory '%s' does not exists", name)
@@ -51,12 +51,12 @@ func (t *templating) SetAssetsDirectory(name string) {
 }
 
 // Returns templating assets directory
-func (t *templating) GetAssetsDirectory() string {
+func (t *Templating) GetAssetsDirectory() string {
     return t.assetsDirectory
 }
 
 // Renders a template
-func (t *templating) Render(context *context, name string) {
+func (t *Templating) Render(context Context, name string) {
     var filename = fmt.Sprintf("%s/%s", t.GetViewsDirectory(), name)
 
     if _, err := os.Stat(filename); err != nil {
@@ -70,6 +70,5 @@ func (t *templating) Render(context *context, name string) {
     template.ExecuteWriter(pongo2.Context{
         "request": context.GetRequest(),
         "response": context.GetResponse(),
-        "router": context.GetRouter(),
     }, context.GetResponse())
 }

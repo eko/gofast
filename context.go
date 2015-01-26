@@ -6,41 +6,31 @@ package gofast
 
 import(
     "net/http"
-    "log"
-    "sort"
-    "time"
-    "fmt"
-    "os"
 )
 
-type context struct {
-    request    *request
-    response   *response
-    router     *router
-    templating *templating
+type Context struct {
+    request  *Request
+    response *Response
 }
 
 // Creates a new context component instance
-func NewContext() context {
-    router     := NewRouter()
-    templating := NewTemplating()
-
-    return context{router: &router, templating: &templating}
+func NewContext() Context {
+    return Context{}
 }
 
 // Sets a HTTP request instance
-func (c *context) SetRequest(req *http.Request, route route) {
+func (c *Context) SetRequest(req *http.Request, route Route) {
     request := NewRequest(req, route)
     c.request = &request
 }
 
 // Returns a HTTP request component instance
-func (c *context) GetRequest() *request {
+func (c *Context) GetRequest() *Request {
     return c.request
 }
 
 // Sets a HTTP response instance
-func (c *context) SetResponse(res http.ResponseWriter) {
+func (c *Context) SetResponse(res http.ResponseWriter) {
     res.Header().Set("Content-Type", "text/html; charset: utf-8")
 
     response := NewResponse(res)
@@ -48,62 +38,6 @@ func (c *context) SetResponse(res http.ResponseWriter) {
 }
 
 // Returns a HTTP response component instance
-func (c *context) GetResponse() *response {
+func (c *Context) GetResponse() *Response {
     return c.response
-}
-
-// Returns a router component instance
-func (c *context) GetRouter() *router {
-    return c.router
-}
-
-// Returns a templating component instance
-func (c *context) GetTemplating() *templating {
-    return c.templating
-}
-
-// Handles HTTP requests
-func (c *context) Handle() {
-    sort.Sort(RouteLen(c.GetRouter().GetRoutes()))
-    http.Handle("/", c)
-
-    assetsDirectory := c.GetTemplating().GetAssetsDirectory()
-    assetsUrl       := fmt.Sprintf("/%s/", assetsDirectory)
-    assetsPrefix    := fmt.Sprintf("/%s", assetsDirectory)
-
-    http.Handle(assetsUrl, http.StripPrefix(assetsPrefix, http.FileServer(http.Dir(assetsDirectory))))
-
-    port := PORT
-
-    if p := os.Getenv("PORT"); p != "" {
-        port = fmt.Sprintf(":%s", p)
-    }
-
-    http.ListenAndServe(port, nil)
-}
-
-// Serves HTTP request by matching the correct route
-func (c *context) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-    router := c.GetRouter()
-    fallbackRoute := router.GetFallback()
-
-    for _, route := range router.GetRoutes() {
-        if req.Method == route.method && route.pattern.MatchString(req.URL.Path) {
-            c.SetRequest(req, route)
-            c.SetResponse(res)
-
-            startTime := time.Now()
-
-            if (fallbackRoute.name == "fallback" && req.URL.Path != "/" && route.pattern.String() == "/") {
-                route = fallbackRoute
-            }
-
-            route.handler()
-
-            stopTime := time.Now()
-
-            log.Printf("[%s] %v | route: '%s' | url: %q (time: %v)\n", req.Method, c.GetResponse().GetStatusCode(), route.name, req.URL.String(), stopTime.Sub(startTime))
-            break
-        }
-    }
 }

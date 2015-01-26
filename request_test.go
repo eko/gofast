@@ -13,7 +13,7 @@ import (
 // Tests setting and retrieving current route
 func TestRoute(t *testing.T) {
     httpRequest := new(http.Request)
-    route := route{"GET", "test", regexp.MustCompile("/test"), func () {}}
+    route := Route{"GET", "test", regexp.MustCompile("/test"), func (c Context) {}}
 
     request := NewRequest(httpRequest, route)
 
@@ -25,7 +25,7 @@ func TestRoute(t *testing.T) {
 // Tests setting and retrieving request parameters
 func TestParameters(t *testing.T) {
     httpRequest := new(http.Request)
-    route := route{"GET", "test", regexp.MustCompile("/test"), func () {}}
+    route := Route{"GET", "test", regexp.MustCompile("/test"), func (c Context) {}}
 
     request := NewRequest(httpRequest, route)
 

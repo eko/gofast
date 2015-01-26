@@ -11,8 +11,7 @@ import (
 
 // Tests directory setter/getter
 func TestSetDirectories(t *testing.T) {
-    c := NewContext()
-    templating := c.GetTemplating()
+    templating := NewTemplating()
 
     templating.SetAssetsDirectory("../")
     templating.SetViewsDirectory("../")
@@ -28,12 +27,12 @@ func TestSetDirectories(t *testing.T) {
 
 // Tests rendering a view via pongo2 library
 func TestRender(t *testing.T) {
-    c := Bootstrap().GetContext()
-
-    templating := c.GetTemplating()
+    templating := NewTemplating()
     templating.SetViewsDirectory("../")
 
+    context := NewContext()
+
     http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-        templating.Render(c, "index.html")
+        templating.Render(context, "index.html")
     })
 }

@@ -12,13 +12,13 @@ import (
 func TestAllAddMethods(t *testing.T) {
     router := NewRouter()
 
-    router.Get("get", "/get", func() {})
-    router.Post("post", "/post", func() {})
-    router.Patch("patch", "/patch", func() {})
-    router.Put("put", "/put", func() {})
-    router.Delete("delete", "/delete", func() {})
-    router.Options("options", "/options", func() {})
-    router.Head("head", "/head", func() {})
+    router.Get("get", "/get", func(c Context) {})
+    router.Post("post", "/post", func(c Context) {})
+    router.Patch("patch", "/patch", func(c Context) {})
+    router.Put("put", "/put", func(c Context) {})
+    router.Delete("delete", "/delete", func(c Context) {})
+    router.Options("options", "/options", func(c Context) {})
+    router.Head("head", "/head", func(c Context) {})
 
     if (7 != len(router.GetRoutes())) {
         t.Fail()
@@ -50,7 +50,7 @@ func TestAllAddMethods(t *testing.T) {
 func TestFallbackRoute(t *testing.T) {
     router := NewRouter()
 
-    router.SetFallback(func() {})
+    router.SetFallback(func(c Context) {})
 
     fallback := router.GetFallback()
 
