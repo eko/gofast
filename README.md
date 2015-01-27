@@ -52,18 +52,18 @@ func main() {
     templating.SetViewsDirectory("views")
 
     // This add a fallback route for 404 (not found) resources
-    router.SetFallback(func(c Context) {
+    router.SetFallback(func(c gofast.Context) {
         c.GetResponse().SetStatusCode(404)
         templating.Render(c, "404.html")
     })
 
     // You can add a simple GET route
-    router.Get("homepage", "/", func(c Context) {
+    router.Get("homepage", "/", func(c gofast.Context) {
         templating.Render(c, "index.html")
     })
 
     // ... or add a more complex POST route with a URL parameter
-    router.Post("add", "/add/([a-zA-Z]+)", func(c Context) {
+    router.Post("add", "/add/([a-zA-Z]+)", func(c gofast.Context) {
         request  := c.GetRequest()
 
         pattern := request.GetRoute().GetPattern()
