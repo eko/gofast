@@ -76,7 +76,7 @@ func main() {
         templating.Render(c, "add.html")
     })
 
-    c.Handle()
+    g.Handle()
 }
 ```
 
