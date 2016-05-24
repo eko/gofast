@@ -5,26 +5,26 @@
 package gofast
 
 import (
-    "net/http"
+	"net/http"
 )
 
 type Response struct {
-    http.ResponseWriter
-    statusCode int
+	http.ResponseWriter
+	statusCode int
 }
 
 // Creates a new Response component instance
 func NewResponse(res http.ResponseWriter) Response {
-    return Response{res, 200}
+	return Response{res, 200}
 }
 
 // Sets Response status code
 func (r *Response) SetStatusCode(statusCode int) {
-    r.WriteHeader(statusCode)
-    r.statusCode = statusCode
+	r.WriteHeader(statusCode)
+	r.statusCode = statusCode
 }
 
 // Returns Response status code
 func (r *Response) GetStatusCode() int {
-    return r.statusCode
+	return r.statusCode
 }

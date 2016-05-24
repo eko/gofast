@@ -5,23 +5,23 @@
 package gofast
 
 import (
-    "testing"
-    "net/http/httptest"
+	"net/http/httptest"
+	"testing"
 )
 
 // Tests setting and retrieving a status code
 func TestStatusCode(t *testing.T) {
-    recorder := httptest.NewRecorder()
+	recorder := httptest.NewRecorder()
 
-    response := NewResponse(recorder)
+	response := NewResponse(recorder)
 
-    if (response.GetStatusCode() != 200) {
-        t.Fail()
-    }
+	if response.GetStatusCode() != 200 {
+		t.Fail()
+	}
 
-    response.SetStatusCode(404)
+	response.SetStatusCode(404)
 
-    if (response.GetStatusCode() != 404) {
-        t.Fail()
-    }
+	if response.GetStatusCode() != 404 {
+		t.Fail()
+	}
 }

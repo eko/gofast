@@ -5,34 +5,34 @@
 package gofast
 
 import (
-    "net/http"
-    "testing"
+	"net/http"
+	"testing"
 )
 
 // Tests directory setter/getter
 func TestSetDirectories(t *testing.T) {
-    templating := NewTemplating()
+	templating := NewTemplating()
 
-    templating.SetAssetsDirectory("../")
-    templating.SetViewsDirectory("../")
+	templating.SetAssetsDirectory("../")
+	templating.SetViewsDirectory("../")
 
-    if ("../" != templating.GetAssetsDirectory()) {
-        t.Fail()
-    }
+	if "../" != templating.GetAssetsDirectory() {
+		t.Fail()
+	}
 
-    if ("../" != templating.GetViewsDirectory()) {
-        t.Fail()
-    }
+	if "../" != templating.GetViewsDirectory() {
+		t.Fail()
+	}
 }
 
 // Tests rendering a view via pongo2 library
 func TestRender(t *testing.T) {
-    templating := NewTemplating()
-    templating.SetViewsDirectory("../")
+	templating := NewTemplating()
+	templating.SetViewsDirectory("../")
 
-    context := NewContext()
+	context := NewContext()
 
-    http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-        templating.Render(context, "index.html")
-    })
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+		templating.Render(context, "index.html")
+	})
 }
