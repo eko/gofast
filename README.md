@@ -44,41 +44,61 @@ import (
 )
 
 func main() {
-    g          := gofast.Bootstrap()
-    router     := g.GetRouter()
-    templating := g.GetTemplating()
+    app := gofast.Bootstrap()
+    app.SetAssetsDirectory("assets")
+    app.SetViewsDirectory("views")
 
-    templating.SetAssetsDirectory("assets")
-    templating.SetViewsDirectory("views")
-
-    // This add a fallback route for 404 (not found) resources
-    router.SetFallback(func(c gofast.Context) {
-        c.GetResponse().SetStatusCode(404)
-        templating.Render(c, "404.html")
+    // This adds a fallback route for 404 (not found) resources
+    app.SetFallback(func(context gofast.Context) {
+        context.GetResponse().SetStatusCode(404)
+        app.Render(context, "404.html")
     })
 
     // You can add a simple GET route
-    router.Get("homepage", "/", func(c gofast.Context) {
-        templating.Render(c, "index.html")
+    app.Get("homepage", "/", func(context gofast.Context) {
+        app.Render(context, "index.html")
     })
 
     // ... or add a more complex POST route with a URL parameter
-    router.Post("add", "/add/([a-zA-Z]+)", func(c gofast.Context) {
-        request  := c.GetRequest()
+    app.Post("add", "/add/([a-zA-Z]+)", func(context gofast.Context) {
+        request  := context.GetRequest()
 
         pattern := request.GetRoute().GetPattern()
         url     := request.GetHttpRequest().URL.Path
 
         request.AddParameter("name", pattern.FindStringSubmatch(url)[1])
 
+        data := request.getFormValue()
+
         // ... your custom code
 
-        templating.Render(c, "add.html")
+        app.Render(context, "add.html")
     })
 
-    g.Handle()
+    app.Listen()
 }
 ```
+
+Templating
+----------
+
+You can use all Pongo2 template features and retrieve data like this:
+
+```twig
+{% extends "../layout.html" %}
+
+{% block navigation %}
+    {% include "../include/navigation.html" with current="blog" %}
+{% endblock %}
+
+<h2>Retrieve a "name" parameter</h2>
+<p>{{ request.GetParameter("name") }}</p>
+
+<h2>Retrieve a "data" POST form value</h2>
+<p>{{ request.GetFormValue("data") }}</p>
+```
+
+You have access to both `request` and `response` objects from context.
 
 Requesting this example
 -----------------------
@@ -89,6 +109,10 @@ Using the example given below, here is the request results:
 > $ curl -X GET http://127.0.0.1:8080/
 <h1>Welcome to the index template!</h1>
 
-> $ curl -X POST http://127.0.0.1:8080/add/toto
-<h1>Added: toto</h1>
+> $ curl -X POST -d'data=my post data' http://127.0.0.1:8080/add/toto
+<h2>Retrieve a "name" parameter</h2>
+<p>toto</p>
+
+<h2>Retrieve a "data" POST form value</h2>
+<p>my post data</p>
 ```

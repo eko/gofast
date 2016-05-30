@@ -19,8 +19,8 @@ const (
 )
 
 type Gofast struct {
-	router     *Router
-	templating *Templating
+	*Router
+	*Templating
 }
 
 // Bootstraps a new instance
@@ -33,22 +33,12 @@ func Bootstrap() *Gofast {
 	return &Gofast{&router, &templating}
 }
 
-// Returns Router instance
-func (g *Gofast) GetRouter() *Router {
-	return g.router
-}
-
-// Returns Templating instance
-func (g *Gofast) GetTemplating() *Templating {
-	return g.templating
-}
-
-// Handles HTTP requests
-func (g *Gofast) Handle() {
-	sort.Sort(RouteLen(g.GetRouter().GetRoutes()))
+// Listens and handles HTTP requests
+func (g *Gofast) Listen() {
+	sort.Sort(RouteLen(g.GetRoutes()))
 	http.Handle("/", g)
 
-	assetsDirectory := g.GetTemplating().GetAssetsDirectory()
+	assetsDirectory := g.GetAssetsDirectory()
 	assetsUrl := fmt.Sprintf("/%s/", assetsDirectory)
 	assetsPrefix := fmt.Sprintf("/%s", assetsDirectory)
 
@@ -65,10 +55,9 @@ func (g *Gofast) Handle() {
 
 // Serves HTTP request by matching the correct route
 func (g *Gofast) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	router := g.GetRouter()
-	fallbackRoute := router.GetFallback()
+	fallbackRoute := g.GetFallback()
 
-	for _, route := range router.GetRoutes() {
+	for _, route := range g.GetRoutes() {
 		if req.Method == route.method && route.pattern.MatchString(req.URL.Path) {
 			context := NewContext()
 			context.SetRequest(req, route)

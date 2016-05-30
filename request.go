@@ -21,6 +21,8 @@ type Parameter struct {
 
 // Creates a new Request component instance
 func NewRequest(req *http.Request, route Route) Request {
+	req.ParseForm()
+
 	return Request{req, &route, make([]Parameter, 0)}
 }
 
@@ -50,4 +52,9 @@ func (r *Request) GetParameter(name string) interface{} {
 	}
 
 	return result
+}
+
+// Returns a POST form value from given name
+func (r *Request) GetFormValue(name string) interface{} {
+	return r.httpRequest.FormValue(name)
 }
