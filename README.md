@@ -68,8 +68,6 @@ func main() {
 
         request.AddParameter("name", pattern.FindStringSubmatch(url)[1])
 
-        data := request.getFormValue()
-
         // ... your custom code
 
         app.Render(context, "add.html")
