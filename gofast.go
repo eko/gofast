@@ -55,26 +55,33 @@ func (g *Gofast) Listen() {
 
 // Serves HTTP request by matching the correct route
 func (g *Gofast) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	fallbackRoute := g.GetFallback()
+	matchedRoute := g.GetFallback()
 
 	for _, route := range g.GetRoutes() {
-		if req.Method == route.method && route.pattern.MatchString(req.URL.Path) {
-			context := NewContext()
-			context.SetRequest(req, route)
-			context.SetResponse(res)
+		if "fallback" == route.name {
+			continue
+		}
 
-			startTime := time.Now()
-
-			if fallbackRoute.name == "fallback" && req.URL.Path != "/" && route.pattern.String() == "/" {
-				route = fallbackRoute
-			}
-
-			route.handler(context)
-
-			stopTime := time.Now()
-
-			log.Printf("[%s] %v | route: '%s' | url: %q (time: %v)\n", req.Method, context.GetResponse().GetStatusCode(), route.name, req.URL.String(), stopTime.Sub(startTime))
+		if (route.method == req.Method || "*" == route.method) && route.pattern.MatchString(req.URL.Path) {
+			matchedRoute = route
 			break
 		}
 	}
+
+	g.HandleRoute(res, req, matchedRoute)
+}
+
+// Handles a route with the initialized context
+func (g *Gofast) HandleRoute(res http.ResponseWriter, req *http.Request, route Route) {
+	startTime := time.Now()
+
+	context := NewContext()
+	context.SetRequest(req, route)
+	context.SetResponse(res)
+
+	route.handler(context)
+
+	stopTime := time.Now()
+
+	log.Printf("[%s] %v | route: '%s' | url: %q (time: %v)\n", req.Method, context.GetResponse().GetStatusCode(), route.name, req.URL.String(), stopTime.Sub(startTime))
 }

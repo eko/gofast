@@ -31,13 +31,27 @@ func (c *Context) GetRequest() *Request {
 
 // Sets a HTTP response instance
 func (c *Context) SetResponse(res http.ResponseWriter) {
-	res.Header().Set("Content-Type", "text/html; charset: utf-8")
-
 	response := NewResponse(res)
 	c.response = &response
+
+	c.AddDefaultHeaders()
 }
 
 // Returns a HTTP response component instance
 func (c *Context) GetResponse() *Response {
 	return c.response
+}
+
+// Adds some defaults headers to send with the response
+func (c *Context) AddDefaultHeaders() {
+	request := c.GetRequest()
+	response := c.GetResponse()
+
+	response.Header().Set("Content-Type", "text/html; charset: utf-8")
+
+	if origin := request.GetHeader("Origin"); origin != "" {
+		response.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		response.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		response.Header().Set("Access-Control-Allow-Origin", origin)
+	}
 }

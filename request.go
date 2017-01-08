@@ -58,3 +58,8 @@ func (r *Request) GetParameter(name string) interface{} {
 func (r *Request) GetFormValue(name string) interface{} {
 	return r.httpRequest.FormValue(name)
 }
+
+// Returns a request header from its name
+func (r *Request) GetHeader(name string) string {
+	return r.GetHttpRequest().Header.Get(name)
+}

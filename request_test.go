@@ -40,3 +40,17 @@ func TestParameters(t *testing.T) {
 		t.Fail()
 	}
 }
+
+// Tests retrieving a header
+func TestGetHeader(t *testing.T) {
+	httpRequest, _ := http.NewRequest("GET", "/", nil)
+	httpRequest.Header.Set("X-Test-Header", "yes")
+
+	route := Route{"GET", "test", regexp.MustCompile("/test"), func(c Context) {}}
+
+	request := NewRequest(httpRequest, route)
+
+	if request.GetHeader("X-Test-Header") != "yes" {
+		t.Fail()
+	}
+}

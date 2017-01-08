@@ -1,10 +1,10 @@
-Gofast - A simple Go micro-framework
-====================================
+Gofast - A light, fast and simple Go micro-framework
+====================================================
 
 [![GoDoc](https://godoc.org/github.com/eko/gofast?status.png)](https://godoc.org/github.com/eko/gofast)
 [![Build Status](https://secure.travis-ci.org/eko/gofast.png?branch=master)](http://travis-ci.org/eko/gofast)
 
-This is a micro-framework I wrote in order to train to Golang language.
+This is a light and fast micro-framework I wrote in order to train to Go language.
 
 This project uses "pongo2" library for rendering templates (compatible with Django Jinja templates)
 
@@ -55,12 +55,12 @@ func main() {
     })
 
     // You can add a simple GET route
-    app.Get("homepage", "/", func(context gofast.Context) {
+    app.Get("homepage", "/$", func(context gofast.Context) {
         app.Render(context, "index.html")
     })
 
     // ... or add a more complex POST route with a URL parameter
-    app.Post("add", "/add/([a-zA-Z]+)", func(context gofast.Context) {
+    app.Post("add", "/add/([a-zA-Z]+)$", func(context gofast.Context) {
         request  := context.GetRequest()
 
         pattern := request.GetRoute().GetPattern()
@@ -113,4 +113,27 @@ Using the example given below, here is the request results:
 
 <h2>Retrieve a "data" POST form value</h2>
 <p>my post data</p>
+```
+
+Default CORS headers
+--------------------
+
+Following CORS headers are enabled by default when the request has an "Origin" header:
+
+```
+Access-Control-Allow-Headers: Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE
+Access-Control-Allow-Origin: domainname.tld
+```
+
+You can override any header (including CORS ones) by the following way into each action:
+
+```go
+app.Get("retrieve-data", "/retrieve$", func(context gofast.Context) {
+    response := context.GetResponse()
+    response.Header().Set("Access-Control-Allow-Methods", "GET")
+    response.Header().Set("Content-Type", "application/json")
+
+    fmt.Fprint(response, "{result: 200}")
+})
 ```
