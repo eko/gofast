@@ -100,6 +100,16 @@ func (r *Route) GetPattern() *regexp.Regexp {
 	return r.pattern
 }
 
+// Sets a route handler
+func (r *Route) SetHandler(handler Handler) {
+	r.handler = handler
+}
+
+// Returns a route handler
+func (r *Route) GetHandler() Handler {
+	return r.handler
+}
+
 // Route sort functions
 func (this RouteLen) Len() int {
 	return len(this)

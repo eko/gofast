@@ -115,6 +115,24 @@ Using the example given below, here is the request results:
 <p>my post data</p>
 ```
 
+Middlewares
+-----------
+
+You can add some middlewares in your application by the following way:
+
+```go
+app.Use(func(context gofast.Context, next gofast.MiddlewareFunc) gofast.Handler {
+  // Some code before calling the next middleware
+  handler := next(context, next)
+  // Some code after calling the next middleware
+
+  return handler
+})
+```
+
+It allows you to access `context` (request, response, current route) and also
+allows to define a new `handler` function to update the application behavior.
+
 Default CORS headers
 --------------------
 

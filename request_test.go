@@ -6,28 +6,13 @@ package gofast
 
 import (
 	"net/http"
-	"regexp"
 	"testing"
 )
-
-// Tests setting and retrieving current route
-func TestRoute(t *testing.T) {
-	httpRequest := new(http.Request)
-	route := Route{"GET", "test", regexp.MustCompile("/test"), func(c Context) {}}
-
-	request := NewRequest(httpRequest, route)
-
-	if request.GetRoute().name != "test" {
-		t.Fail()
-	}
-}
 
 // Tests setting and retrieving request parameters
 func TestParameters(t *testing.T) {
 	httpRequest := new(http.Request)
-	route := Route{"GET", "test", regexp.MustCompile("/test"), func(c Context) {}}
-
-	request := NewRequest(httpRequest, route)
+	request := NewRequest(httpRequest)
 
 	request.AddParameter("test1", "value1")
 	request.AddParameter("test2", "value2")
@@ -46,9 +31,7 @@ func TestGetHeader(t *testing.T) {
 	httpRequest, _ := http.NewRequest("GET", "/", nil)
 	httpRequest.Header.Set("X-Test-Header", "yes")
 
-	route := Route{"GET", "test", regexp.MustCompile("/test"), func(c Context) {}}
-
-	request := NewRequest(httpRequest, route)
+	request := NewRequest(httpRequest)
 
 	if request.GetHeader("X-Test-Header") != "yes" {
 		t.Fail()

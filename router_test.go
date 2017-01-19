@@ -72,3 +72,17 @@ func TestFallbackRoute(t *testing.T) {
 		t.Fail()
 	}
 }
+
+// Tests route handling getter
+func TestRouteGetHandler(t *testing.T) {
+	handler := func(c Context) {}
+
+	router := NewRouter()
+	router.Get("get", "/get", handler)
+
+	route := router.GetRoute("get")
+
+	if route.GetHandler() == nil {
+		t.Fail()
+	}
+}

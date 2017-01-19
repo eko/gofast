@@ -21,6 +21,7 @@ const (
 type Gofast struct {
 	*Router
 	*Templating
+	*Middleware
 }
 
 // Bootstraps a new instance
@@ -29,8 +30,9 @@ func Bootstrap() *Gofast {
 
 	router := NewRouter()
 	templating := NewTemplating()
+	middleware := NewMiddleware()
 
-	return &Gofast{&router, &templating}
+	return &Gofast{&router, &templating, &middleware}
 }
 
 // Listens and handles HTTP requests
@@ -76,10 +78,12 @@ func (g *Gofast) HandleRoute(res http.ResponseWriter, req *http.Request, route R
 	startTime := time.Now()
 
 	context := NewContext()
-	context.SetRequest(req, route)
+	context.SetRoute(&route)
+	context.SetRequest(req)
 	context.SetResponse(res)
 
-	route.handler(context)
+	handler := g.HandleMiddlewares(context)
+	handler(context)
 
 	stopTime := time.Now()
 

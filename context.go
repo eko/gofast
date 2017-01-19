@@ -11,6 +11,7 @@ import (
 type Context struct {
 	request  *Request
 	response *Response
+	route    *Route
 }
 
 // Creates a new context component instance
@@ -19,14 +20,24 @@ func NewContext() Context {
 }
 
 // Sets a HTTP request instance
-func (c *Context) SetRequest(req *http.Request, route Route) {
-	request := NewRequest(req, route)
+func (c *Context) SetRequest(req *http.Request) {
+	request := NewRequest(req)
 	c.request = &request
 }
 
 // Returns a HTTP request component instance
 func (c *Context) GetRequest() *Request {
 	return c.request
+}
+
+// Sets a route instance
+func (c *Context) SetRoute(route *Route) {
+	c.route = route
+}
+
+// Returns a route instance
+func (c *Context) GetRoute() *Route {
+	return c.route
 }
 
 // Sets a HTTP response instance

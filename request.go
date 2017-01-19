@@ -10,7 +10,6 @@ import (
 
 type Request struct {
 	httpRequest *http.Request
-	route       *Route
 	parameters  []Parameter
 }
 
@@ -20,20 +19,15 @@ type Parameter struct {
 }
 
 // Creates a new Request component instance
-func NewRequest(req *http.Request, route Route) Request {
+func NewRequest(req *http.Request) Request {
 	req.ParseForm()
 
-	return Request{req, &route, make([]Parameter, 0)}
+	return Request{req, make([]Parameter, 0)}
 }
 
 // Returs HTTP request
 func (r *Request) GetHttpRequest() *http.Request {
 	return r.httpRequest
-}
-
-// Returns current route
-func (r *Request) GetRoute() *Route {
-	return r.route
 }
 
 // Adds a request parameter
