@@ -63,7 +63,7 @@ func main() {
     app.Post("add", "/add/([a-zA-Z]+)$", func(context gofast.Context) {
         request  := context.GetRequest()
 
-        pattern := request.GetRoute().GetPattern()
+        pattern := app.GetRoute().GetPattern()
         url     := request.GetHttpRequest().URL.Path
 
         request.AddParameter("name", pattern.FindStringSubmatch(url)[1])
