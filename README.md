@@ -63,7 +63,7 @@ func main() {
     app.Post("add", "/add/([a-zA-Z]+)$", func(context gofast.Context) {
         request  := context.GetRequest()
 
-        pattern := app.GetRoute().GetPattern()
+        pattern := context.GetRoute().GetPattern()
         url     := request.GetHttpRequest().URL.Path
 
         request.AddParameter("name", pattern.FindStringSubmatch(url)[1])
@@ -155,3 +155,14 @@ app.Get("retrieve-data", "/retrieve$", func(context gofast.Context) {
     fmt.Fprint(response, "{result: 200}")
 })
 ```
+
+HTTP/2 Support
+--------------
+
+You can use HTTP/2 support by using the following line instead of app.Listen():
+
+```
+app.ListenHttp2("./fullchain.pem", "./privkey.pem")
+```
+
+Of course, you will have to precize SSL certificate and private key.

@@ -11,6 +11,8 @@ import (
 	"os"
 	"sort"
 	"time"
+
+	"golang.org/x/net/http2"
 )
 
 const (
@@ -35,8 +37,8 @@ func Bootstrap() *Gofast {
 	return &Gofast{&router, &templating, &middleware}
 }
 
-// Listens and handles HTTP requests
-func (g *Gofast) Listen() {
+// Prepares a HTTP server
+func (g *Gofast) PrepareHttpServer() string {
 	sort.Sort(RouteLen(g.GetRoutes()))
 	http.Handle("/", g)
 
@@ -52,7 +54,23 @@ func (g *Gofast) Listen() {
 		port = fmt.Sprintf(":%s", p)
 	}
 
+	return port
+}
+
+// Listens and handles HTTP requests
+func (g *Gofast) Listen() {
+	port := g.PrepareHttpServer()
+
 	http.ListenAndServe(port, nil)
+}
+
+// Listens and handles HTTP/2 requests
+func (g *Gofast) ListenHttp2(certificate string, key string) {
+	port := g.PrepareHttpServer()
+	server := &http.Server{Addr: port, Handler: nil}
+
+	http2.ConfigureServer(server, nil)
+	log.Fatal(server.ListenAndServeTLS(certificate, key))
 }
 
 // Serves HTTP request by matching the correct route
