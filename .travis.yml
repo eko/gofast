@@ -12,5 +12,6 @@ go:
 
 install:
   - go get github.com/flosch/pongo2
+  - go get golang.org/x/net/http2
 
 script: go test -v

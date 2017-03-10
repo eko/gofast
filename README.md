@@ -14,6 +14,7 @@ Installation
 ```bash
 $ git clone git@github.com:eko/gofast.git
 $ go get -u github.com/flosch/pongo2
+$ go get -u golang.org/x/net/http2
 ```
 
 Running an application
@@ -76,6 +77,17 @@ func main() {
     app.Listen()
 }
 ```
+
+HTTP/2 Support
+--------------
+
+You can use HTTP/2 support by using the following line instead of app.Listen():
+
+```
+app.ListenHttp2("./fullchain.pem", "./privkey.pem")
+```
+
+Of course, you will have to precize SSL certificate and private key.
 
 Templating
 ----------
@@ -155,14 +167,3 @@ app.Get("retrieve-data", "/retrieve$", func(context gofast.Context) {
     fmt.Fprint(response, "{result: 200}")
 })
 ```
-
-HTTP/2 Support
---------------
-
-You can use HTTP/2 support by using the following line instead of app.Listen():
-
-```
-app.ListenHttp2("./fullchain.pem", "./privkey.pem")
-```
-
-Of course, you will have to precize SSL certificate and private key.
