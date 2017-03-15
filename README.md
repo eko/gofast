@@ -89,6 +89,16 @@ app.ListenHttp2("./fullchain.pem", "./privkey.pem")
 
 Of course, you will have to precize SSL certificate and private key.
 
+You can also set `Link` headers in order to preload assets:
+
+```
+response := c.GetResponse()
+
+response.Header().Add("Link", "</assets/img/rocket.png>; rel=preload")
+response.Header().Add("Link", "</assets/css/style.css>; rel=preload")
+```
+
+
 Templating
 ----------
 
