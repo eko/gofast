@@ -11,10 +11,18 @@ This project uses "pongo2" library for rendering templates (compatible with Djan
 Installation
 ------------
 
+Prior to Go 1.11:
+
 ```bash
 $ git clone git@github.com:eko/gofast.git
 $ go get -u github.com/flosch/pongo2
 $ go get -u golang.org/x/net/http2
+```
+
+When using Go 1.11 (go modules) or later:
+
+```bash
+$ go build ./...
 ```
 
 Running an application
