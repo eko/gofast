@@ -1,0 +1,11 @@
+[[constraint]]
+  name = "github.com/flosch/pongo2"
+  version = "3.0.0"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/net"
+
+[prune]
+  go-tests = true
+  unused-packages = true
