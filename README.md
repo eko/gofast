@@ -17,6 +17,7 @@ Prior to Go 1.11:
 $ git clone git@github.com:eko/gofast.git
 $ go get -u github.com/flosch/pongo2
 $ go get -u golang.org/x/net/http2
+$ go get -u golang.org/sirupsen/logrus
 ```
 
 Prefer using `dep`?
@@ -189,5 +190,17 @@ app.Get("retrieve-data", "/retrieve$", func(context gofast.Context) {
     response.Header().Set("Content-Type", "application/json")
 
     fmt.Fprint(response, "{result: 200}")
+})
+```
+
+Use the logger
+--------------
+
+The Logrus logger instance can be used to write information in your application stdout if you need it. You can retrieve the logger instance from the context as follows:
+
+```go
+app.Get("test-logger", "/test-logger$", func(context gofast.Context) {
+    logger := context.GetLogger()
+    logger.Info("Roger, this is my log information!")
 })
 ```

@@ -6,9 +6,12 @@ package gofast
 
 import (
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Context struct {
+	logger   *logrus.Logger
 	request  *Request
 	response *Response
 	route    *Route
@@ -17,6 +20,16 @@ type Context struct {
 // Creates a new context component instance
 func NewContext() Context {
 	return Context{}
+}
+
+// Sets Logrus logger instance
+func (c *Context) SetLogger(logger *logrus.Logger) {
+	c.logger = logger
+}
+
+// Returns a Logrus logger instance
+func (c *Context) GetLogger() *logrus.Logger {
+	return c.logger
 }
 
 // Sets a HTTP request instance
