@@ -6,9 +6,10 @@ package gofast
 
 import (
 	"fmt"
-	"github.com/flosch/pongo2"
-	"log"
 	"os"
+
+	"github.com/flosch/pongo2"
+	"github.com/sirupsen/logrus"
 )
 
 type Templating struct {
@@ -25,7 +26,7 @@ func NewTemplating() Templating {
 func (t *Templating) SetViewsDirectory(name string) {
 	if _, err := os.Stat(name); err != nil {
 		if os.IsNotExist(err) {
-			log.Printf("Directory '%s' does not exists", name)
+			logrus.Warn(fmt.Sprintf("Directory '%s' does not exists", name))
 			os.Exit(1)
 		}
 	}
@@ -42,7 +43,7 @@ func (t *Templating) GetViewsDirectory() string {
 func (t *Templating) SetAssetsDirectory(name string) {
 	if _, err := os.Stat(name); err != nil {
 		if os.IsNotExist(err) {
-			log.Printf("Directory '%s' does not exists", name)
+			logrus.Warn(fmt.Sprintf("Directory '%s' does not exists", name))
 			os.Exit(1)
 		}
 	}
@@ -61,7 +62,7 @@ func (t *Templating) Render(context Context, name string) {
 
 	if _, err := os.Stat(filename); err != nil {
 		if os.IsNotExist(err) {
-			log.Printf("View '%s' does not exists", filename)
+			logrus.Warn(fmt.Sprintf("View '%s' does not exists", filename))
 			os.Exit(1)
 		}
 	}

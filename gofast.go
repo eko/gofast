@@ -6,12 +6,12 @@ package gofast
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"sort"
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
 )
 
@@ -21,6 +21,7 @@ const (
 )
 
 type Gofast struct {
+	*logrus.Logger
 	*Router
 	*Templating
 	*Middleware
@@ -28,13 +29,14 @@ type Gofast struct {
 
 // Bootstraps a new instance
 func Bootstrap() *Gofast {
-	log.Printf("gofast v%s", VERSION)
+	logrus.WithFields(logrus.Fields{"version": VERSION}).Info("gofast is running")
 
+	logger := logrus.New()
 	router := NewRouter()
 	templating := NewTemplating()
 	middleware := NewMiddleware()
 
-	return &Gofast{&router, &templating, &middleware}
+	return &Gofast{logger, &router, &templating, &middleware}
 }
 
 // Prepares a HTTP server
@@ -70,7 +72,7 @@ func (g *Gofast) ListenHttp2(certificate string, key string) {
 	server := &http.Server{Addr: port, Handler: nil}
 
 	http2.ConfigureServer(server, nil)
-	log.Fatal(server.ListenAndServeTLS(certificate, key))
+	logrus.Fatal(server.ListenAndServeTLS(certificate, key))
 }
 
 // Serves HTTP request by matching the correct route
@@ -96,6 +98,7 @@ func (g *Gofast) HandleRoute(res http.ResponseWriter, req *http.Request, route R
 	startTime := time.Now()
 
 	context := NewContext()
+	context.SetLogger(g.Logger)
 	context.SetRoute(&route)
 	context.SetRequest(req)
 	context.SetResponse(res)
@@ -105,5 +108,11 @@ func (g *Gofast) HandleRoute(res http.ResponseWriter, req *http.Request, route R
 
 	stopTime := time.Now()
 
-	log.Printf("[%s] %v | route: '%s' | url: %q (time: %v)\n", req.Method, context.GetResponse().GetStatusCode(), route.name, req.URL.String(), stopTime.Sub(startTime))
+	logrus.WithFields(logrus.Fields{
+		"name":     route.name,
+		"method":   req.Method,
+		"code":     context.GetResponse().GetStatusCode(),
+		"url":      req.URL.String(),
+		"duration": stopTime.Sub(startTime),
+	}).Info("Route matched")
 }
