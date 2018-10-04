@@ -19,6 +19,12 @@ $ go get -u github.com/flosch/pongo2
 $ go get -u golang.org/x/net/http2
 ```
 
+Prefer using `dep`?
+
+```bash
+$ dep ensure
+```
+
 When using Go 1.11 (go modules) or later:
 
 ```bash
