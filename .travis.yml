@@ -1,8 +1,6 @@
 language: go
 
 go:
-  - 1.5
-  - 1.6
   - 1.7
   - 1.8
   - 1.9
@@ -11,6 +9,7 @@ go:
 
 
 install:
+  - go get github.com/sirupsen/logrus
   - go get github.com/flosch/pongo2
   - go get golang.org/x/net/http2
 
