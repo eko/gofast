@@ -93,7 +93,7 @@ func (g *Gofast) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	g.HandleRoute(res, req, matchedRoute)
 }
 
-// Handles a route with the initialized context
+// HandleRoute handles a route with the initialized context
 func (g *Gofast) HandleRoute(res http.ResponseWriter, req *http.Request, route Route) {
 	startTime := time.Now()
 
