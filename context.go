@@ -27,7 +27,7 @@ func (c *Context) SetLogger(logger *logrus.Logger) {
 	c.logger = logger
 }
 
-// Returns a Logrus logger instance
+// GetLogger returns a Logrus logger instance
 func (c *Context) GetLogger() *logrus.Logger {
 	return c.logger
 }
@@ -38,7 +38,7 @@ func (c *Context) SetRequest(req *http.Request) {
 	c.request = &request
 }
 
-// Returns a HTTP request component instance
+// GetRequest returns a HTTP request component instance
 func (c *Context) GetRequest() *Request {
 	return c.request
 }
@@ -48,7 +48,7 @@ func (c *Context) SetRoute(route *Route) {
 	c.route = route
 }
 
-// Returns a route instance
+// GetRoute returns a route instance
 func (c *Context) GetRoute() *Route {
 	return c.route
 }
@@ -61,12 +61,12 @@ func (c *Context) SetResponse(res http.ResponseWriter) {
 	c.AddDefaultHeaders()
 }
 
-// Returns a HTTP response component instance
+// GetResponse returns a HTTP response component instance
 func (c *Context) GetResponse() *Response {
 	return c.response
 }
 
-// Adds some defaults headers to send with the response
+// AddDefaultHeaders adds some defaults headers to send with the response
 func (c *Context) AddDefaultHeaders() {
 	request := c.GetRequest()
 	response := c.GetResponse()

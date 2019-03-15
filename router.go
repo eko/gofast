@@ -28,7 +28,7 @@ func NewRouter() Router {
 	return Router{routes: make([]Route, 0)}
 }
 
-// Adds different HTTP methods route
+// Get adds different HTTP methods route
 func (r *Router) Get(name string, pattern string, handler Handler) {
 	r.Add("GET", name, pattern, handler)
 }
@@ -61,18 +61,18 @@ func (r *Router) All(name string, pattern string, handler Handler) {
 	r.Add("*", name, pattern, handler)
 }
 
-// Adds a new route to router
+// Add adds a new route to router
 func (r *Router) Add(method string, name string, pattern string, handler Handler) {
 	route := Route{method, name, regexp.MustCompile(pattern), handler}
 	r.routes = append(r.routes, route)
 }
 
-// Returns all routes available in router
+// GetRoutes returns all routes available in router
 func (r *Router) GetRoutes() []Route {
 	return r.routes
 }
 
-// Returns a Route from given name
+// GetRoute returns a Route from given name
 func (r *Router) GetRoute(name string) Route {
 	var result Route
 
@@ -90,12 +90,12 @@ func (r *Router) SetFallback(handler Handler) {
 	r.Add("*", "fallback", "/", handler)
 }
 
-// Returns fallback route (for 404 error pages)
+// GetFallback returns fallback route (for 404 error pages)
 func (r *Router) GetFallback() Route {
 	return r.GetRoute("fallback")
 }
 
-// Returns a route pattern
+// GetPattern returns a route pattern
 func (r *Route) GetPattern() *regexp.Regexp {
 	return r.pattern
 }
@@ -105,7 +105,7 @@ func (r *Route) SetHandler(handler Handler) {
 	r.handler = handler
 }
 
-// Returns a route handler
+// GetHandler returns a route handler
 func (r *Route) GetHandler() Handler {
 	return r.handler
 }

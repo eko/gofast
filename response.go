@@ -24,7 +24,7 @@ func (r *Response) SetStatusCode(statusCode int) {
 	r.statusCode = statusCode
 }
 
-// Returns Response status code
+// GetStatusCode returns Response status code
 func (r *Response) GetStatusCode() int {
 	return r.statusCode
 }

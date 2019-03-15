@@ -30,12 +30,12 @@ func (r *Request) GetHttpRequest() *http.Request {
 	return r.httpRequest
 }
 
-// Adds a request parameter
+// AddParameter adds a request parameter
 func (r *Request) AddParameter(name string, value interface{}) {
 	r.parameters = append(r.parameters, Parameter{name, value})
 }
 
-// Returns a request parameter from given name
+// GetParameter returns a request parameter from given name
 func (r *Request) GetParameter(name string) interface{} {
 	var result interface{}
 
@@ -48,12 +48,12 @@ func (r *Request) GetParameter(name string) interface{} {
 	return result
 }
 
-// Returns a POST form value from given name
+// GetFormValue returns a POST form value from given name
 func (r *Request) GetFormValue(name string) interface{} {
 	return r.httpRequest.FormValue(name)
 }
 
-// Returns a request header from its name
+// GetHeader returns a request header from its name
 func (r *Request) GetHeader(name string) string {
 	return r.GetHttpRequest().Header.Get(name)
 }

@@ -15,12 +15,12 @@ func NewMiddleware() Middleware {
 	return Middleware{middlewares: make([]MiddlewareFunc, 0)}
 }
 
-// Adds a new middleware
+// Use adds a new middleware
 func (m *Middleware) Use(middleware MiddlewareFunc) {
 	m.middlewares = append(m.middlewares, middleware)
 }
 
-// Handle middlewares and returns handler
+// HandleMiddlewares handles middlewares and returns handler
 func (m *Middleware) HandleMiddlewares(context Context) Handler {
 	m.Use(func(context Context, next MiddlewareFunc) Handler {
 		return context.GetRoute().GetHandler()

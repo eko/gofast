@@ -34,7 +34,7 @@ func (t *Templating) SetViewsDirectory(name string) {
 	t.viewsDirectory = name
 }
 
-// Returns templating views directory
+// GetViewsDirectory returns templating views directory
 func (t *Templating) GetViewsDirectory() string {
 	return t.viewsDirectory
 }
@@ -51,12 +51,12 @@ func (t *Templating) SetAssetsDirectory(name string) {
 	t.assetsDirectory = name
 }
 
-// Returns templating assets directory
+// GetAssetsDirectory returns templating assets directory
 func (t *Templating) GetAssetsDirectory() string {
 	return t.assetsDirectory
 }
 
-// Renders a template
+// Render renders a template
 func (t *Templating) Render(context Context, name string) {
 	var filename = fmt.Sprintf("%s/%s", t.GetViewsDirectory(), name)
 
