@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// Tests different add methods
+// TestAllAddMethods tests different add methods
 func TestAllAddMethods(t *testing.T) {
 	router := NewRouter()
 
@@ -60,7 +60,7 @@ func TestAllAddMethods(t *testing.T) {
 	}
 }
 
-// Tests adding a fallback route
+// TestFallbackRoute tests adding a fallback route
 func TestFallbackRoute(t *testing.T) {
 	router := NewRouter()
 
@@ -73,7 +73,7 @@ func TestFallbackRoute(t *testing.T) {
 	}
 }
 
-// Tests route handling getter
+// TestRouteGetHandler tests route handling getter
 func TestRouteGetHandler(t *testing.T) {
 	handler := func(c Context) {}
 

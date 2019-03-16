@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// Tests directory setter/getter
+// TestSetDirectories tests directory setter/getter
 func TestSetDirectories(t *testing.T) {
 	templating := NewTemplating()
 
@@ -25,7 +25,7 @@ func TestSetDirectories(t *testing.T) {
 	}
 }
 
-// Tests rendering a view via pongo2 library
+// TestRender tests rendering a view via pongo2 library
 func TestRender(t *testing.T) {
 	templating := NewTemplating()
 	templating.SetViewsDirectory("../")

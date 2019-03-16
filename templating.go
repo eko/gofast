@@ -17,12 +17,12 @@ type Templating struct {
 	assetsDirectory string
 }
 
-// Creates a new templating component instance
+// NewTemplating creates a new templating component instance
 func NewTemplating() Templating {
 	return Templating{}
 }
 
-// Sets templating views directory
+// SetViewsDirectory sets templating views directory
 func (t *Templating) SetViewsDirectory(name string) {
 	if _, err := os.Stat(name); err != nil {
 		if os.IsNotExist(err) {
@@ -39,7 +39,7 @@ func (t *Templating) GetViewsDirectory() string {
 	return t.viewsDirectory
 }
 
-// Sets templating assets directory
+// SetAssetsDirectory sets templating assets directory
 func (t *Templating) SetAssetsDirectory(name string) {
 	if _, err := os.Stat(name); err != nil {
 		if os.IsNotExist(err) {

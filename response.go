@@ -13,12 +13,12 @@ type Response struct {
 	statusCode int
 }
 
-// Creates a new Response component instance
+// NewResponse creates a new Response component instance
 func NewResponse(res http.ResponseWriter) Response {
 	return Response{res, 200}
 }
 
-// Sets Response status code
+// SetStatusCode sets Response status code
 func (r *Response) SetStatusCode(statusCode int) {
 	r.WriteHeader(statusCode)
 	r.statusCode = statusCode

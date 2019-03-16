@@ -23,7 +23,7 @@ type RouteLen []Route
 
 type Handler func(context Context)
 
-// Creates a new router component instance
+// NewRouter creates a new router component instance
 func NewRouter() Router {
 	return Router{routes: make([]Route, 0)}
 }
@@ -85,7 +85,7 @@ func (r *Router) GetRoute(name string) Route {
 	return result
 }
 
-// Sets route fallback (for 404 error pages)
+// SetFallback sets route fallback (for 404 error pages)
 func (r *Router) SetFallback(handler Handler) {
 	r.Add("*", "fallback", "/", handler)
 }
@@ -100,7 +100,7 @@ func (r *Route) GetPattern() *regexp.Regexp {
 	return r.pattern
 }
 
-// Sets a route handler
+// SetHandler sets a route handler
 func (r *Route) SetHandler(handler Handler) {
 	r.handler = handler
 }
@@ -110,7 +110,7 @@ func (r *Route) GetHandler() Handler {
 	return r.handler
 }
 
-// Route sort functions
+// Len route sort functions
 func (this RouteLen) Len() int {
 	return len(this)
 }

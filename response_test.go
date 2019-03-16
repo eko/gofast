@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// Tests setting and retrieving a status code
+// TestStatusCode tests setting and retrieving a status code
 func TestStatusCode(t *testing.T) {
 	recorder := httptest.NewRecorder()
 

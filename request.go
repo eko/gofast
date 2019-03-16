@@ -18,14 +18,14 @@ type Parameter struct {
 	value interface{}
 }
 
-// Creates a new Request component instance
+// NewRequest creates a new Request component instance
 func NewRequest(req *http.Request) Request {
 	req.ParseForm()
 
 	return Request{req, make([]Parameter, 0)}
 }
 
-// Returs HTTP request
+// GetHttpRequest returs HTTP request
 func (r *Request) GetHttpRequest() *http.Request {
 	return r.httpRequest
 }

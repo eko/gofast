@@ -27,7 +27,7 @@ type Gofast struct {
 	*Middleware
 }
 
-// Bootstraps a new instance
+// Bootstrap bootstraps a new instance
 func Bootstrap() *Gofast {
 	logrus.WithFields(logrus.Fields{"version": VERSION}).Info("gofast is running")
 
@@ -39,7 +39,7 @@ func Bootstrap() *Gofast {
 	return &Gofast{logger, &router, &templating, &middleware}
 }
 
-// Prepares a HTTP server
+// PrepareHttpServer prepares a HTTP server
 func (g *Gofast) PrepareHttpServer() string {
 	sort.Sort(RouteLen(g.GetRoutes()))
 	http.Handle("/", g)
@@ -59,14 +59,14 @@ func (g *Gofast) PrepareHttpServer() string {
 	return port
 }
 
-// Listens and handles HTTP requests
+// Listen listens and handles HTTP requests
 func (g *Gofast) Listen() {
 	port := g.PrepareHttpServer()
 
 	http.ListenAndServe(port, nil)
 }
 
-// Listens and handles HTTP/2 requests
+// ListenHttp2 listens and handles HTTP/2 requests
 func (g *Gofast) ListenHttp2(certificate string, key string) {
 	port := g.PrepareHttpServer()
 	server := &http.Server{Addr: port, Handler: nil}
@@ -75,7 +75,7 @@ func (g *Gofast) ListenHttp2(certificate string, key string) {
 	logrus.Fatal(server.ListenAndServeTLS(certificate, key))
 }
 
-// Serves HTTP request by matching the correct route
+// ServeHTTP serves HTTP request by matching the correct route
 func (g *Gofast) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	matchedRoute := g.GetFallback()
 

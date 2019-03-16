@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// Tests setting and retrieving request parameters
+// TestParameters tests setting and retrieving request parameters
 func TestParameters(t *testing.T) {
 	httpRequest := new(http.Request)
 	request := NewRequest(httpRequest)
@@ -26,7 +26,7 @@ func TestParameters(t *testing.T) {
 	}
 }
 
-// Tests retrieving a header
+// TestGetHeader tests retrieving a header
 func TestGetHeader(t *testing.T) {
 	httpRequest, _ := http.NewRequest("GET", "/", nil)
 	httpRequest.Header.Set("X-Test-Header", "yes")

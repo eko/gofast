@@ -10,7 +10,7 @@ type Middleware struct {
 
 type MiddlewareFunc func(context Context, middleware MiddlewareFunc) Handler
 
-// Creates a new middleware component instance
+// NewMiddleware creates a new middleware component instance
 func NewMiddleware() Middleware {
 	return Middleware{middlewares: make([]MiddlewareFunc, 0)}
 }

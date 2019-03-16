@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// Tests initializing a new middleware component
+// TestMiddleware tests initializing a new middleware component
 func TestMiddleware(t *testing.T) {
 	middleware := NewMiddleware()
 
@@ -17,7 +17,7 @@ func TestMiddleware(t *testing.T) {
 	}
 }
 
-// Tests adding a new middlewares
+// TestUseNewMiddlewares tests adding a new middlewares
 func TestUseNewMiddlewares(t *testing.T) {
 	middleware := NewMiddleware()
 	middleware.Use(func(context Context, next MiddlewareFunc) Handler {

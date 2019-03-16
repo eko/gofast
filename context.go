@@ -17,12 +17,12 @@ type Context struct {
 	route    *Route
 }
 
-// Creates a new context component instance
+// NewContext creates a new context component instance
 func NewContext() Context {
 	return Context{}
 }
 
-// Sets Logrus logger instance
+// SetLogger sets Logrus logger instance
 func (c *Context) SetLogger(logger *logrus.Logger) {
 	c.logger = logger
 }
@@ -32,7 +32,7 @@ func (c *Context) GetLogger() *logrus.Logger {
 	return c.logger
 }
 
-// Sets a HTTP request instance
+// SetRequest sets a HTTP request instance
 func (c *Context) SetRequest(req *http.Request) {
 	request := NewRequest(req)
 	c.request = &request
@@ -43,7 +43,7 @@ func (c *Context) GetRequest() *Request {
 	return c.request
 }
 
-// Sets a route instance
+// SetRoute sets a route instance
 func (c *Context) SetRoute(route *Route) {
 	c.route = route
 }
@@ -53,7 +53,7 @@ func (c *Context) GetRoute() *Route {
 	return c.route
 }
 
-// Sets a HTTP response instance
+// SetResponse sets a HTTP response instance
 func (c *Context) SetResponse(res http.ResponseWriter) {
 	response := NewResponse(res)
 	c.response = &response
